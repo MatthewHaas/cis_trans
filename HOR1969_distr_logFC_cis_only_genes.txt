@@ -1,0 +1,24 @@
+# 9 December 2019
+# WD: /filer-dg/agruppen/DG/haas/Exome_capture_data
+# BCC131
+
+# Read in data
+readRDS("170825_BCC131_results_limma.Rds") -> x
+
+# Bin by logFC values
+x$classification[type_control == "cis only", .N, key=.(bin=logFC_cis_control %/% 1)] -> y
+
+# colors are hard-coded...
+colors=c("red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+
+# Plot the distribution of log fold changes
+pdf("BCC131_distr_logFC_cis_genes.pdf", width=12, height=6)
+layout(matrix(c(1,2), nrow=1), widths=c(1,1))
+x$classification[type_control == "cis only", hist(logFC_cis_control, breaks=21, xlab="logFC values", ylab="Frequency", main=paste0("BCC131 Distribution of logFC values", "\n", "Control"), xlim=c(-12,12), ylim=c(0,180), yaxt='n', col=colors)]
+axis(2, las=2)
+legend("topright", legend=c("Morex allele", "BCC131 allele"), lwd=4, col=c("red", "black"), bty='n')
+
+x$classification[type_cold == "cis only", hist(logFC_cis_cold, breaks=21, xlab="logFC values", ylab="Frequency", main=paste0("BCC131 Distribution of logFC values", "\n", "Cold"), ylim=c(0,180), xlim=c(-12,12), yaxt='n', col=colors)]
+axis(2, las=2)
+legend("topright", legend=c("Morex allele", "BCC131 allele"), lwd=4, col=c("red", "black"), bty='n')
+dev.off()

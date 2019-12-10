@@ -1,12 +1,9 @@
 # 9 December 2019
 # WD: /filer-dg/agruppen/DG/haas/Exome_capture_data
+# FT11
 
 # Read in data
 readRDS("170825_FT11_results_limma.Rds") -> x
-
-# Collect the names of the genes that are classified as regulated in "cis only" according to the limma method for both control and cold conditions
-# control_cis_genes <- x$classification[type_control == "cis only"]$gene
-# cold_cis_genes <- x$classification[type_cold == "cis only"]$gene
 
 # Bin by logFC values
 x$classification[type_control == "cis only", .N, key=.(bin=logFC_cis_control %/% 1)] -> y
